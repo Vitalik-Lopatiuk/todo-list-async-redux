@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import List from "./components/List";
+import ClipLoader from "react-spinners/ClipLoader";
 import { useDispatch, useSelector } from "react-redux";
-import { pushArray } from "./store/todoSlice";
+import { pushTodoFetch, fetchTodo } from "./store/todoSlice";
+
 function App() {
   const [handleInput, setHandleInput] = useState("");
-
+  const { status, error } = useSelector((state) => state.todo);
   const dispatch = useDispatch();
 
   const focusInput = useRef(null);
@@ -12,13 +14,17 @@ function App() {
     focusInput.current.focus();
   }, []);
 
-  const pushTask = () => dispatch(pushArray({ handleInput }));
+  const pushTask = () => dispatch(pushTodoFetch( handleInput ));
 
   const KeyDown = (e) => {
     if (e.key === "Enter") {
       pushTask();
     }
   };
+
+  useEffect(() => {
+    dispatch(fetchTodo());
+  }, []);
 
   return (
     <div className="App">
@@ -35,6 +41,18 @@ function App() {
           Push
         </button>
       </div>
+      <div>
+        {status === "loading" && (
+          <ClipLoader
+            color="#ffffff"
+            loading="true"
+            size={150}
+            aria-label="Loading Spinner"
+            data-testid="loader"
+          />
+        )}
+      </div>
+      {error && <p>{error}</p>}
       <List />
     </div>
   );

@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { removeArray, toggleComplete } from "../store/todoSlice";
+import { deleteTodoFetch, toggleTodoFetch } from "../store/todoSlice";
 
 const NewItem = ({ dataTitle, id, completedStatus }) => {
   const dispatch = useDispatch();
@@ -21,7 +21,7 @@ const NewItem = ({ dataTitle, id, completedStatus }) => {
       )}
       <button
         style={{ marginLeft: 10 }}
-        onClick={() => dispatch(removeArray({ id }))}
+        onClick={() => dispatch(deleteTodoFetch( id ))}
       >
         X
       </button>
@@ -29,7 +29,7 @@ const NewItem = ({ dataTitle, id, completedStatus }) => {
         style={{ marginLeft: 10 }}
         checked={completedStatus}
         type={"checkbox"}
-        onChange={() => dispatch(toggleComplete({ id }))}
+        onChange={() => dispatch(toggleTodoFetch( id ))}
       />
     </div>
   );
